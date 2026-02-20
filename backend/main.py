@@ -29,7 +29,7 @@ def health():
 
 @app.get("/api/runs")
 def list_runs():
-    response = supabase.table("runs").select("*").order("created_at", desc=True).execute()
+    response = supabase.table("crawl_runs").select("*").order("created_at", desc=True).execute()
     return response.data
 
 

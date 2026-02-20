@@ -21,7 +21,7 @@ Run the following SQL in the **Supabase SQL Editor**:
 
 ```sql
 -- Crawl runs
-create table runs (
+create table crawl_runs (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   url text not null,
@@ -32,7 +32,7 @@ create table runs (
 -- Pages discovered during a run
 create table pages (
   id uuid primary key default gen_random_uuid(),
-  run_id uuid not null references runs(id) on delete cascade,
+  run_id uuid not null references crawl_runs(id) on delete cascade,
   url text not null,
   title text,
   greenwashing_score float,  -- 0.0 (clean) to 1.0 (high greenwashing)
@@ -40,12 +40,12 @@ create table pages (
 );
 
 -- Enable Row Level Security (RLS)
-alter table runs enable row level security;
+alter table crawl_runs enable row level security;
 alter table pages enable row level security;
 
 -- Allow authenticated users to read all rows
-create policy "Authenticated read runs"
-  on runs for select to authenticated using (true);
+create policy "Authenticated read crawl_runs"
+  on crawl_runs for select to authenticated using (true);
 
 create policy "Authenticated read pages"
   on pages for select to authenticated using (true);
@@ -53,7 +53,7 @@ create policy "Authenticated read pages"
 
 ### 3. Enable Realtime
 
-In Supabase: **Database → Replication** → enable the `runs` and `pages` tables for realtime.
+In Supabase: **Database → Replication** → enable the `crawl_runs` and `pages` tables for realtime.
 
 ### 4. Get your credentials
 
